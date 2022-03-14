@@ -1,6 +1,8 @@
 package symmetric.spn;
 
 import symmetric.CryptoSystem;
+import symmetric.box.PBox;
+import symmetric.box.SBox;
 import symmetric.mode.Mode;
 
 import java.util.Optional;
@@ -32,5 +34,14 @@ public interface SPN extends CryptoSystem {
      */
     void useMode(Optional<Mode> mode);
 
+    /**
+     * @param sBox Optional concrete SBox
+     */
+    void setSBox(Optional<SBox> sBox);
+
+    /**
+     * @param pBox Optional concrete PBox
+     */
+    void setPBox(Optional<PBox> pBox);
 
 }
