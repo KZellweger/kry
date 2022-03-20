@@ -1,5 +1,7 @@
 package impl.kevin;
 
+import symmetric.box.PBox;
+import symmetric.box.SBox;
 import symmetric.mode.Mode;
 import symmetric.spn.SPN;
 
@@ -41,6 +43,16 @@ public class SpnImpl implements SPN {
 
     @Override
     public void useMode(Optional<Mode> mode) {
+
+    }
+
+    @Override
+    public void setSBox(Optional<SBox> sBox) {
+
+    }
+
+    @Override
+    public void setPBox(Optional<PBox> pBox) {
 
     }
 }
