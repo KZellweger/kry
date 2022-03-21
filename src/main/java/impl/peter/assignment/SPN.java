@@ -9,8 +9,8 @@ public class SPN {
     private KeyGenerator generator;
 
     public SPN() {
-        this.sbox = new SBox(true);
-        this.pbox = new PBox(true);
+        this.sbox = new SBox(false);
+        this.pbox = new PBox(false);
         this.r = 4;
         this.n = 4;
         this.m = 4;
@@ -49,16 +49,15 @@ public class SPN {
                 roundValue = roundValue ^ generator.getDecryptionKeys()[j];
                 System.out.println(String.format("New r Value: %s", Helper.getFullByteString(roundValue)));
                 System.out.println("---");
-                //roundValue = applySBox(roundValue, true, true);
+                roundValue = applySBox(roundValue, true, true);
             }
         }
         return "";
     }
 
     private int applySBox(int a, boolean inverse, boolean verbose) {
-        int result = 0;
         if(verbose) {
-            System.out.println(String.format("Before SBox: ", Helper.getFullByteString(a)));
+            System.out.println(String.format("Before SBox: %s", Helper.getFullByteString(a)));
         }
 
         // split into parts
@@ -77,15 +76,17 @@ public class SPN {
             }
         }
 
+        int result = 0;
         // put back together
         for(int i = 0; i < 4; i++) {
-            result = parts[i] << 4;
+            result = parts[i] & 0b1111;
+            // TODO: Reassigning does not help here, needs shift and &
         }
 
         if(verbose) {
-            System.out.println(String.format("After SBox: ", Helper.getFullByteString(result)));
+            System.out.println(String.format("After SBox: %s", Helper.getFullByteString(result)));
         }
-        return a;
+        return result;
     }
 
     private void splitToParts(int a) {

@@ -53,7 +53,7 @@ public class KeyGenerator {
             }
         }
         if(verbose) {
-            System.out.println("Inverese Keys:");
+            System.out.println("Inverse Keys:");
             for (int i = 0; i < result.length; i++) {
                 String bytes = String.format("%16s", Integer.toBinaryString(result[i])).replace(' ', '0');
                 System.out.println(String.format("Key[%s]: %s", i, bytes));
