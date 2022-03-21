@@ -10,13 +10,13 @@ public abstract class Box {
         this.box = new HashMap<>();
     }
 
-    public abstract String traverse(int i);
+    public abstract int traverse(int i);
 
     protected int tra(int i) {
         return box.get(i);
     }
 
-    public abstract String inverse(int tra);
+    public abstract int inverse(int tra);
 
     public int inv(int i) {
         int j = -1;
@@ -27,5 +27,9 @@ public abstract class Box {
         }
         if(j == -1) throw new IllegalArgumentException("Illegal input");
         return j;
+    }
+
+    public int size() {
+        return box.size();
     }
 }

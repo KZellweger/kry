@@ -1,9 +1,11 @@
 package impl.peter.assignment;
 
 public class SBox extends Box {
+    private boolean verbose;
 
-    public SBox() {
+    public SBox(boolean b) {
         super();
+        this.verbose = b;
         box.put(0, 14);
         box.put(1, 4);
         box.put(2, 13);
@@ -22,15 +24,19 @@ public class SBox extends Box {
         box.put(15, 7);
     }
 
-    public String traverse(int i) {
-        String bytes = String.format("%4s", Integer.toBinaryString(super.tra(i))).replace(' ', '0');
-        System.out.println(bytes);
-        return bytes;
+    public int traverse(int i) {
+        if(verbose) {
+            String bytes = String.format("%4s", Integer.toBinaryString(super.tra(i))).replace(' ', '0');
+            System.out.println(bytes);
+        }
+        return super.tra(i);
     }
 
-    public String inverse(int i) {
-        String bytes = String.format("%4s", Integer.toBinaryString(super.inv(i))).replace(' ', '0');
-        System.out.println(bytes);
-        return bytes;
+    public int inverse(int i) {
+        if(verbose) {
+            String bytes = String.format("%4s", Integer.toBinaryString(super.inv(i))).replace(' ', '0');
+            System.out.println(bytes);
+        }
+        return super.inv(i);
     }
 }

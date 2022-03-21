@@ -1,8 +1,8 @@
 package impl.peter.assignment;
 
-public class PBox extends Box{
+public class PBox extends Box {
 
-    public PBox() {
+    public PBox(boolean b) {
         super();
         box.put(0, 0);
         box.put(1, 4);
@@ -23,12 +23,16 @@ public class PBox extends Box{
     }
 
     @Override
-    public String traverse(int i) {
-        return null;
+    public int traverse(int i) {
+        return 0;
     }
 
     @Override
-    public String inverse(int tra) {
-        return null;
+    public int inverse(int tra) {
+        return 0;
+    }
+
+    public void permutate() {
+
     }
 }
