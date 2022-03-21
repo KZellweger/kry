@@ -45,7 +45,7 @@ public class RCTR {
             System.out.println("Pair y: " + i + " y+1: " + (i + 1));
             byte[] yiBytes = message[i];
 //            int yi = bytesToInt(yiBytes, 4);
-            int yi = (y + i) % maxBound; //Todo: i think that is wrong
+            int yi = (y + i) % maxBound;
             yiBytes = intToBytes(yi, yiBytes.length, 4);
             yiBytes = cryptoSystem.encrypt(yiBytes);
             byte[] xi = xorByteArrays(yiBytes, message[i + 1]);
