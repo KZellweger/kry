@@ -4,7 +4,7 @@ public class KeyGenerator {
     private boolean verbose;
     private int n, m, r;
     private int key;
-    private Box pBox;
+    private PBox pBox;
 
     public KeyGenerator(int n, int m, int r, boolean verbose) {
         this.verbose = verbose;
@@ -15,11 +15,14 @@ public class KeyGenerator {
 
     public int[] getEncryptionKeys() {
         int[] roundKeys = new int[r + 1];
+        // Create bit mask of all 1 for size n * m
         int mask = (1 << n * m) - 1;
         if(verbose) System.out.println(String.format("Mask: %16s", Integer.toBinaryString(mask)).replace(' ', '0'));
 
+        // For each round create a key
         for(int i = 0; i < r + 1; i++) {
-            int value = mask & (key >> 16 - 4 * i);
+            // The round key will be calculated by shifting for n bits each time
+            int value = mask & (key >> n * m - n * i);
             roundKeys[i] = value;
 
             if(verbose) {
@@ -33,13 +36,17 @@ public class KeyGenerator {
     public int[] getDecryptionKeys() {
         int[] roundKeys = getEncryptionKeys();
         int[] result = new int[roundKeys.length];
+        // For each encryption key
         for(int i = 0; i < roundKeys.length; i++) {
-            // i = (0, 4)
+            // Swap the index
             int index = roundKeys.length - 1 - i;
+            // If i = 0 or i = keys.size - 1 only swap
             if(i == 0 || i == roundKeys.length - 1) {
                 result[i] = roundKeys[index];
             } else {
-                // Permutation of key
+                // Permutation of key if not first or last key
+                // Generate a mask with leading 0 and 1 at the end.
+                // TODO: Am I retarded and could I just have used int 1 as mask?
                 int mask = (0 << n * m - 1) + 1;
 
                 if(verbose) System.out.println(String.format("Mask: %16s", Integer.toBinaryString(mask)).replace(' ', '0'));
@@ -53,29 +60,27 @@ public class KeyGenerator {
                     cnt++;
                 }
                 if(verbose) printArr(keyAsArr);
-                permutate(keyAsArr);
+                pBox.permutate(keyAsArr);
+                int newKey = 0;
+                for(int l = 0; l < keyAsArr.length; l++) {
+                    System.out.println(keyAsArr[l]);
+                    newKey = newKey << keyAsArr[l];
+                }
+                result[i] = newKey;
+                if(verbose) {
+                    String bytes = String.format("%16s", Integer.toBinaryString(newKey).replace(' ', '0'));
+                    System.out.println(String.format("Key: %s", bytes));
+                }
                 if(verbose) printArr(keyAsArr);
             }
         }
-        return result;
-    }
-
-    private void permutate(int[] a) {
-        // Since the bpox is self-inverse we need to mark swapped entries
-        boolean[] swapped = new boolean[a.length];
-        for(int i = 0; i < a.length; i++) {
-            if(!swapped[i]) {
-                swap(a, i, pBox.tra(i));
-                swapped[i] = true;
-                swapped[pBox.tra(i)] = true;
+        if(verbose) {
+            for (int i = 0; i < result.length; i++) {
+                String bytes = String.format("%16s", Integer.toBinaryString(result[i])).replace(' ', '0');
+                System.out.println(String.format("Key[%s]: %s", i, bytes));
             }
         }
-    }
-
-    private void swap(int[] a, int i, int j) {
-        int t = a[i];
-        a[i] = a[j];
-        a[j] = t;
+        return result;
     }
 
     private void printArr(int[] arr) {
@@ -85,7 +90,7 @@ public class KeyGenerator {
         System.out.println("");
     }
 
-    public void setPBox(Box pBox) {
+    public void setPBox(PBox pBox) {
         this.pBox = pBox;
     }
 

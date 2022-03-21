@@ -32,7 +32,21 @@ public class PBox extends Box {
         return 0;
     }
 
-    public void permutate() {
+    public void permutate(int[] a) {
+        // Since the bpox is self-inverse we need to mark swapped entries
+        boolean[] swapped = new boolean[a.length];
+        for(int i = 0; i < a.length; i++) {
+            if(!swapped[i]) {
+                swap(a, i, tra(i));
+                swapped[i] = true;
+                swapped[tra(i)] = true;
+            }
+        }
+    }
 
+    private void swap(int[] a, int i, int j) {
+        int t = a[i];
+        a[i] = a[j];
+        a[j] = t;
     }
 }

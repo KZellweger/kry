@@ -18,7 +18,7 @@ public class SPN {
         this.s = 32;
         this.generator = new KeyGenerator(n, m, r,true);
         generator.setKey(key);
-        generator.setPBox(pbox);
+        generator.setPBox((PBox) pbox);
 
         generator.getDecryptionKeys();
 
