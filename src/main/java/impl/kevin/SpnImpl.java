@@ -32,7 +32,27 @@ public class SpnImpl {
     }
 
     public byte[] decrypt(byte[] encrypted) {
-        return new byte[0];
+        byte[] message = encrypted;
+
+        for (int i = r; i >= 0; i--) {
+            byte[] roundKey = Arrays.copyOfRange(key, i, i + 4);
+            if (i == 0) {
+                // last round
+                message = sbox.inverse(message);
+                message = xorByteArrays(message, roundKey);
+            } else if (i == r) {
+                // init round
+                message = xorByteArrays(message, roundKey);
+            } else {
+                message = sbox.inverse(message);
+                message = bitPermutation.apply(message);
+                roundKey = bitPermutation.apply(roundKey);
+                message = xorByteArrays(message, roundKey);
+                // regular round
+            }
+        }
+
+        return message;
     }
 
     public byte[] encrypt(byte[] message) {

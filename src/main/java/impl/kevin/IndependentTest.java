@@ -25,14 +25,12 @@ public class IndependentTest {
     public static void main(String[] args) throws IOException, URISyntaxException {
         byte[] message = {0b0001, 0b0010, 0b1000, 0b1111};
         byte[] chiffre = {0b1010, 0b1110, 0b1011, 0b0100};
-        for (byte b : chiffre) {
-            System.out.println(Integer.valueOf(b));
-        }
-
 
         SpnImpl kevinsSpn = new SpnImpl(4, 4, 4, 32);
         kevinsSpn.setKey(new byte[]{0b0001, 0b0001, 0b0010, 0b1000, 0b1000, 0b1100, 0b0000, 0b0000});
-        byte[] res = kevinsSpn.encrypt(message);
-        System.out.println(Arrays.equals(res, chiffre));
+        byte[] encrypt = kevinsSpn.encrypt(message);
+        System.out.println(Arrays.equals(encrypt, chiffre));
+        byte[] decrypted = kevinsSpn.decrypt(chiffre);
+        System.out.println(Arrays.equals(decrypted, message));
     }
 }
