@@ -1,14 +1,16 @@
 package impl.kevin;
 
-import symmetric.box.PBox;
+import symmetric.CryptoSystem;
 import symmetric.box.SBox;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class SpnImpl {
+import static impl.kevin.Utils.xorByteArrays;
 
-    private final PBox bitPermutation = new BitPermutation(
+public class SpnImpl implements CryptoSystem {
+
+    private final BitPermutation bitPermutation = new BitPermutation(
             new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15},
             new int[]{0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15});
 
@@ -31,6 +33,7 @@ public class SpnImpl {
         this.key = key;
     }
 
+    @Override
     public byte[] decrypt(byte[] encrypted) {
         byte[] message = encrypted;
 
@@ -45,8 +48,8 @@ public class SpnImpl {
                 message = xorByteArrays(message, roundKey);
             } else {
                 message = sbox.inverse(message);
-                message = bitPermutation.apply(message);
-                roundKey = bitPermutation.apply(roundKey);
+                message = bitPermutation.permute(message);
+                roundKey = bitPermutation.permute(roundKey);
                 message = xorByteArrays(message, roundKey);
                 // regular round
             }
@@ -55,6 +58,7 @@ public class SpnImpl {
         return message;
     }
 
+    @Override
     public byte[] encrypt(byte[] message) {
         byte[] crypto = message;
         for (int i = 0; i <= r; i++) {
@@ -67,21 +71,12 @@ public class SpnImpl {
                 crypto = xorByteArrays(crypto, roundKey);
             } else {
                 crypto = sbox.apply(crypto);
-                crypto = bitPermutation.apply(crypto);
+                crypto = bitPermutation.permute(crypto);
                 crypto = xorByteArrays(crypto, roundKey);
                 //regular round
             }
         }
         return crypto;
     }
-
-    private byte[] xorByteArrays(byte[] b1, byte[] b2) {
-        byte[] res = new byte[b1.length];
-        for (int i = 0; i < b1.length; i++) {
-            res[i] = (byte) (b1[i] ^ b2[i]);
-        }
-        return res;
-    }
-
 
 }

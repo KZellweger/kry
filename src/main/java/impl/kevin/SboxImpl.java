@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static impl.kevin.Utils.dezimalToByte;
+
 public class SboxImpl implements SBox {
 
     private final Map<Byte, Byte> matrix;
@@ -13,7 +15,7 @@ public class SboxImpl implements SBox {
     public SboxImpl(List<Integer> values) {
         this.matrix = new HashMap<>();
         for (int i = 0; i < values.size(); i++) {
-            this.matrix.put(Utils.dezimalToByte(i), Utils.dezimalToByte(values.get(i)));
+            this.matrix.put(dezimalToByte(i), dezimalToByte(values.get(i)));
         }
     }
 
@@ -31,7 +33,6 @@ public class SboxImpl implements SBox {
     @Override
     public byte[] inverse(byte[] b) {
         byte[] bytes = new byte[b.length];
-
         for (int i = 0; i < b.length; i++) {
             int finalI = i;
             Map.Entry<Byte, Byte> entry = matrix.entrySet().stream().filter(byteByteEntry -> byteByteEntry.getValue().equals(b[finalI])).findFirst().orElseThrow(() -> new IllegalArgumentException("Unknown Key"));
