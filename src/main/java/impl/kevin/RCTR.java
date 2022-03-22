@@ -19,7 +19,7 @@ public class RCTR {
         return random.nextInt(maxBound);
     }
 
-    byte[][] encrypt(byte[][] message) {
+    public byte[][] encrypt(byte[][] message) {
 
         int y = getRandomY();
         byte[][] encrypted = new byte[message.length + 1][message[0].length];
@@ -36,7 +36,7 @@ public class RCTR {
         return encrypted;
     }
 
-    byte[][] decrypt(byte[][] message) {
+    public byte[][] decrypt(byte[][] message) {
 
         int y = bytesToInt(message[0], 4);
         byte[][] decrypted = new byte[message.length][message[0].length];
