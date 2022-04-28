@@ -13,7 +13,8 @@ public class Main {
         if(result == null) {
             System.out.println(String.format("No password found for hash: %s", Constants.hash));
         } else {
-            System.out.println(String.format("Found plain text password: %s leading to reduced value: %s for hash: %s leading to plain text: %s", result.get(0), result.get(1), Constants.hash, result.get(2)));
+            System.out.println(String.format("Found plain text password: %s leading to reduced rainbow table entry: %s. \n" +
+                    "Reduced value: %s leads to hash: %s.", result.get(0), result.get(1), result.get(2), Constants.hash));
         }
     }
 }

@@ -153,6 +153,7 @@ public class RainbowTable {
                             BigInteger nextHash = hashPassword(roundPassword);
                             hashAtIndex = bigIntToString(nextHash);
                             roundPassword = reducePassword(nextHash, k);
+                            if(key.equals(getKeyForValue(result))) helper = roundPassword;
                         }
                         if(hashAtIndex.equals(Constants.hash) && !key.equals(result)) {
                             return null;
